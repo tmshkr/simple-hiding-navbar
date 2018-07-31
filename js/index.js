@@ -1,8 +1,3 @@
-
-//  Acknowledgements
-//  https://codyhouse.co/gem/auto-hiding-navigation
-//  https://www.w3schools.com/howto/howto_js_navbar_hide_scroll.asp
-
 var navbar = document.getElementById('navbar');
 var visible = true;
 var drawerOpen = false;
