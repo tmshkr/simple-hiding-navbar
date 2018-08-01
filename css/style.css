@@ -173,3 +173,7 @@ nav span a {
 #navbar-title::-moz-selection {
   background: transparent;
 }
+
+.text-source {
+  margin: 1em;
+}
