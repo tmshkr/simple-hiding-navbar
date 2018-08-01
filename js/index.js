@@ -70,8 +70,8 @@ document.getElementById('navbar-title').onclick = function(event) {
 	event.cancelBubble = true; //clicking on #navbar-title does not toggle drawer
 }
 
-window.onresize = getPageTop;
 window.onresize = function() {
+  getPageTop();
   mediaMatch();
   if (!mediaMatches) {
     navbar.onclick = null;
