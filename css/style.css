@@ -177,3 +177,6 @@ nav span a {
 .text-source {
   margin: 1em;
 }
+.text-source a {
+  color: #42A5F5;
+}

@@ -37,11 +37,13 @@ function mediaMatch() {
 
 function openDrawer() {
 	navbar.className = 'drawer-open';
+  document.documentElement.style.cursor = 'pointer';
 	drawerOpen = true;
 }
 
 function closeDrawer() {
 	navbar.className = 'drawer-closed';
+  document.documentElement.style.cursor = null;
 	drawerOpen = false;
 }
 
