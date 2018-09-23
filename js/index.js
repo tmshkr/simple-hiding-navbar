@@ -1,4 +1,3 @@
-
 //  Acknowledgements
 //  https://codyhouse.co/gem/auto-hiding-navigation
 //  https://www.w3schools.com/howto/howto_js_navbar_hide_scroll.asp
@@ -6,29 +5,38 @@
 var navbar = document.getElementById('navbar');
 var visible = true;
 var drawerOpen = false;
-var scrollBuffer = 10;
 var pageTop;
 var prevScrollPos = window.pageYOffset;
 var mediaMatches;
 
 
 function autoHideNavbar() {
-	var currentScrollPos = window.pageYOffset;
+  let currentScrollPos = window.pageYOffset;
   //scrolling up
-	if (!visible && prevScrollPos - currentScrollPos > scrollBuffer) {
-		navbar.style.transform = 'translateY(0)';
-		visible = true;
-	}
+  if (!visible && prevScrollPos - currentScrollPos > 40 ||
+    !visible && currentScrollPos < pageTop) {
+    (!window.requestAnimationFrame) ?
+    navbar.style.transform = 'translateY(0)':
+      requestAnimationFrame(function() {
+        navbar.style.transform = 'translateY(0)';
+      });
+    visible = true;
+  }
   //scrolling down
-	else if (visible && currentScrollPos - prevScrollPos > scrollBuffer && currentScrollPos > pageTop) {
-		navbar.style.transform = 'translateY(-100%)';
-		visible = false;
-	}
-	prevScrollPos = currentScrollPos;
+  else if (visible && currentScrollPos - prevScrollPos > 20 &&
+    currentScrollPos > pageTop) {
+    (!window.requestAnimationFrame) ?
+    navbar.style.transform = 'translateY(-100%)':
+      requestAnimationFrame(function() {
+        navbar.style.transform = 'translateY(-100%)';
+      });
+    visible = false;
+  }
+  prevScrollPos = currentScrollPos;
 }
 
 function getPageTop() {
-	pageTop = Math.max(document.documentElement.clientHeight * 0.25, window.innerHeight * 0.25) || 100;
+  pageTop = Math.max(document.documentElement.clientHeight * 0.25, window.innerHeight * 0.25) || 100;
 }
 
 function mediaMatch() {
@@ -36,31 +44,27 @@ function mediaMatch() {
 }
 
 function openDrawer() {
-	navbar.className = 'drawer-open';
+  navbar.className = 'drawer-open';
   document.documentElement.style.cursor = 'pointer';
-	drawerOpen = true;
+  drawerOpen = true;
 }
 
 function closeDrawer() {
-	navbar.className = 'drawer-closed';
+  navbar.className = 'drawer-closed';
   document.documentElement.style.cursor = null;
-	drawerOpen = false;
+  drawerOpen = false;
 }
 
 function toggleDrawer() {
-	(drawerOpen) ? closeDrawer() : openDrawer();
+  (drawerOpen) ? closeDrawer(): openDrawer();
 }
 
 getPageTop();
 mediaMatch();
 
-window.onscroll = function() {
-	(!window.requestAnimationFrame) ?
-	setTimeout(autoHideNavbar, 250) :
-	requestAnimationFrame(autoHideNavbar);
-}
+window.onscroll = autoHideNavbar;
 
-if (mediaMatches || mediaMatches === undefined){
+if (mediaMatches || mediaMatches === undefined) {
   navbar.onclick = function(event) {
     toggleDrawer();
     event.cancelBubble = true;
@@ -69,7 +73,7 @@ if (mediaMatches || mediaMatches === undefined){
 
 document.onclick = closeDrawer;
 document.getElementById('navbar-title').onclick = function(event) {
-	event.cancelBubble = true; //clicking on #navbar-title does not toggle drawer
+  event.cancelBubble = true; //clicking on #navbar-title does not toggle drawer
 }
 
 window.onresize = function() {
@@ -83,5 +87,5 @@ window.onresize = function() {
     navbar.onclick = function(event) {
       toggleDrawer();
       event.cancelBubble = true;
-  }
+    }
 }
