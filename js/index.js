@@ -7,6 +7,7 @@ var visible = true;
 var drawerOpen = false;
 var pageTop;
 var prevScrollPos = window.pageYOffset;
+var media = window.matchMedia('(max-width: 600px)');
 
 
 function autoHideNavbar() {
@@ -39,10 +40,6 @@ function getPageTop() {
 	window.innerHeight * 0.25) || 100;
 }
 
-function mediaMatch() {
-	return window.matchMedia('(max-width: 600px)').matches;
-}
-
 function openDrawer() {
 	navbar.className = 'drawer-open';
 	document.onclick = closeDrawer;
@@ -65,7 +62,7 @@ getPageTop();
 
 window.onscroll = autoHideNavbar;
 
-if (mediaMatch()) {
+if (media.matches) {
 	navbar.onclick = function(event) {
 		toggleDrawer();
 		event.cancelBubble = true;
@@ -78,7 +75,7 @@ document.getElementById('navbar-title').onclick = function(event) {
 
 window.onresize = function() {
 	getPageTop();
-	if (mediaMatch())
+	if (media.matches)
 		navbar.onclick = function(event) {
 			toggleDrawer();
 			event.cancelBubble = true;
