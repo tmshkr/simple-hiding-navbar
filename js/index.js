@@ -7,7 +7,6 @@ var visible = true;
 var drawerOpen = false;
 var pageTop;
 var prevScrollPos = window.pageYOffset;
-var mediaMatches;
 
 
 function autoHideNavbar() {
@@ -36,56 +35,56 @@ function autoHideNavbar() {
 }
 
 function getPageTop() {
-	pageTop = Math.max(document.documentElement.clientHeight * 0.25, window.innerHeight * 0.25) || 100;
+	pageTop = Math.max(document.documentElement.clientHeight * 0.25,
+	window.innerHeight * 0.25) || 100;
 }
 
 function mediaMatch() {
-	mediaMatches = window.matchMedia('(max-width: 600px)').matches;
+	return window.matchMedia('(max-width: 600px)').matches;
 }
 
 function openDrawer() {
 	navbar.className = 'drawer-open';
+	document.onclick = closeDrawer;
 	document.documentElement.style.cursor = 'pointer';
 	drawerOpen = true;
 }
 
 function closeDrawer() {
 	navbar.className = 'drawer-closed';
+	document.onclick = null;
 	document.documentElement.style.cursor = null;
 	drawerOpen = false;
 }
 
 function toggleDrawer() {
-	(drawerOpen) ? closeDrawer(): openDrawer();
+	(drawerOpen) ? closeDrawer() : openDrawer();
 }
 
 getPageTop();
-mediaMatch();
 
 window.onscroll = autoHideNavbar;
 
-if (mediaMatches || mediaMatches === undefined) {
+if (mediaMatch()) {
 	navbar.onclick = function(event) {
 		toggleDrawer();
 		event.cancelBubble = true;
 	}
 }
 
-document.onclick = closeDrawer;
 document.getElementById('navbar-title').onclick = function(event) {
 	event.cancelBubble = true; //clicking on #navbar-title does not toggle drawer
 }
 
 window.onresize = function() {
 	getPageTop();
-	mediaMatch();
-	if (!mediaMatches) {
-		navbar.onclick = null;
-		closeDrawer();
-	}
-	else if (mediaMatches)
+	if (mediaMatch())
 		navbar.onclick = function(event) {
 			toggleDrawer();
 			event.cancelBubble = true;
 		}
+	else {
+		navbar.onclick = null;
+		closeDrawer();
+	}
 }
