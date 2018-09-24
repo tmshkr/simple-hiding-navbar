@@ -17,7 +17,7 @@ function autoHideNavbar() {
 		!visible && currentScrollPos < pageTop) {
 		(!window.requestAnimationFrame) ?
 		navbar.style.transform = 'translateY(0)':
-			requestAnimationFrame(function () {
+			requestAnimationFrame(function() {
 				navbar.style.transform = 'translateY(0)';
 			});
 		visible = true;
@@ -27,7 +27,7 @@ function autoHideNavbar() {
 		currentScrollPos > pageTop) {
 		(!window.requestAnimationFrame) ?
 		navbar.style.transform = 'translateY(-100%)':
-			requestAnimationFrame(function () {
+			requestAnimationFrame(function() {
 				navbar.style.transform = 'translateY(-100%)';
 			});
 		visible = false;
@@ -63,20 +63,20 @@ getPageTop();
 window.onscroll = autoHideNavbar;
 
 if (media.matches) {
-	navbar.onclick = function (event) {
+	navbar.onclick = function(event) {
 		toggleDrawer();
 		event.cancelBubble = true;
 	}
 }
 
-document.getElementById('navbar-title').onclick = function (event) {
+document.getElementById('navbar-title').onclick = function(event) {
 	event.cancelBubble = true; //clicking on #navbar-title does not toggle drawer
 }
 
-window.onresize = function () {
+window.onresize = function() {
 	getPageTop();
 	if (media.matches)
-		navbar.onclick = function (event) {
+		navbar.onclick = function(event) {
 			toggleDrawer();
 			event.cancelBubble = true;
 		}
