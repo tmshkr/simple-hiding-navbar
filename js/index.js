@@ -13,21 +13,21 @@ var media = window.matchMedia('(max-width: 600px)');
 function autoHideNavbar() {
 	let currentScrollPos = window.pageYOffset;
 	//scrolling up
-	if (!visible && prevScrollPos - currentScrollPos > 40 ||
+	if (!visible && prevScrollPos - currentScrollPos > 30 ||
 		!visible && currentScrollPos < pageTop) {
 		(!window.requestAnimationFrame) ?
 		navbar.style.transform = 'translateY(0)':
-			requestAnimationFrame(function() {
+			requestAnimationFrame(function () {
 				navbar.style.transform = 'translateY(0)';
 			});
 		visible = true;
 	}
 	//scrolling down
-	else if (visible && currentScrollPos - prevScrollPos > 20 &&
+	else if (visible && currentScrollPos - prevScrollPos > 10 &&
 		currentScrollPos > pageTop) {
 		(!window.requestAnimationFrame) ?
 		navbar.style.transform = 'translateY(-100%)':
-			requestAnimationFrame(function() {
+			requestAnimationFrame(function () {
 				navbar.style.transform = 'translateY(-100%)';
 			});
 		visible = false;
@@ -37,7 +37,7 @@ function autoHideNavbar() {
 
 function getPageTop() {
 	pageTop = Math.max(document.documentElement.clientHeight * 0.25,
-	window.innerHeight * 0.25) || 100;
+		window.innerHeight * 0.25) || 100;
 }
 
 function openDrawer() {
@@ -55,7 +55,7 @@ function closeDrawer() {
 }
 
 function toggleDrawer() {
-	(drawerOpen) ? closeDrawer() : openDrawer();
+	(drawerOpen) ? closeDrawer(): openDrawer();
 }
 
 getPageTop();
@@ -63,20 +63,20 @@ getPageTop();
 window.onscroll = autoHideNavbar;
 
 if (media.matches) {
-	navbar.onclick = function(event) {
+	navbar.onclick = function (event) {
 		toggleDrawer();
 		event.cancelBubble = true;
 	}
 }
 
-document.getElementById('navbar-title').onclick = function(event) {
+document.getElementById('navbar-title').onclick = function (event) {
 	event.cancelBubble = true; //clicking on #navbar-title does not toggle drawer
 }
 
-window.onresize = function() {
+window.onresize = function () {
 	getPageTop();
 	if (media.matches)
-		navbar.onclick = function(event) {
+		navbar.onclick = function (event) {
 			toggleDrawer();
 			event.cancelBubble = true;
 		}
