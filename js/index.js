@@ -2,86 +2,77 @@
 //  https://codyhouse.co/gem/auto-hiding-navigation
 //  https://www.w3schools.com/howto/howto_js_navbar_hide_scroll.asp
 
-var navbar = document.getElementById('navbar');
-var visible = true;
-var drawerOpen = false;
-var pageTop;
-var prevScrollPos = window.pageYOffset;
-var media = window.matchMedia('(max-width: 600px)');
-
+const navbar = document.getElementById("navbar");
+let navbarVisible = true;
+let drawerOpen = false;
+let pageTop;
+let prevScrollPos = window.pageYOffset;
+let media = window.matchMedia("(max-width: 600px), (max-height: 500px)");
 
 function autoHideNavbar() {
-	let currentScrollPos = window.pageYOffset;
-	//scrolling up
-	if (!visible && prevScrollPos - currentScrollPos > 30 ||
-		!visible && currentScrollPos < pageTop) {
-		(!window.requestAnimationFrame) ?
-		navbar.style.transform = 'translateY(0)':
-			requestAnimationFrame(function() {
-				navbar.style.transform = 'translateY(0)';
-			});
-		visible = true;
-	}
-	//scrolling down
-	else if (visible && currentScrollPos - prevScrollPos > 10 &&
-		currentScrollPos > pageTop) {
-		(!window.requestAnimationFrame) ?
-		navbar.style.transform = 'translateY(-100%)':
-			requestAnimationFrame(function() {
-				navbar.style.transform = 'translateY(-100%)';
-			});
-		visible = false;
-	}
-	prevScrollPos = currentScrollPos;
+  const currentScrollPos = window.pageYOffset;
+  if (navbarVisible) {
+    // scrolling down
+    if (currentScrollPos - prevScrollPos > 10 && currentScrollPos > pageTop) {
+      navbar.style.transform = `translateY(-100%)`;
+      navbarVisible = false;
+    }
+  } else {
+    // scrolling up
+    if (prevScrollPos - currentScrollPos > 20 || currentScrollPos < pageTop) {
+      navbar.style.transform = `translateY(0)`;
+      navbarVisible = true;
+    }
+  }
+
+  prevScrollPos = currentScrollPos;
 }
 
-function getPageTop() {
-	pageTop = Math.max(document.documentElement.clientHeight * 0.25,
-		window.innerHeight * 0.25) || 100;
+function handleResize() {
+  pageTop =
+    Math.max(
+      document.documentElement.clientHeight * 0.25,
+      window.innerHeight * 0.25
+    ) || 100;
+  if (media.matches)
+    navbar.onclick = function(e) {
+      toggleDrawer();
+      e.cancelBubble = true;
+    };
+  else {
+    navbar.onclick = null;
+    closeDrawer();
+  }
 }
+handleResize();
+window.onresize = handleResize;
 
 function openDrawer() {
-	navbar.className = 'drawer-open';
-	document.onclick = closeDrawer;
-	document.documentElement.style.cursor = 'pointer';
-	drawerOpen = true;
+  navbar.className = "drawer-open";
+  document.onclick = closeDrawer;
+  document.documentElement.style.cursor = "pointer";
+  drawerOpen = true;
 }
 
 function closeDrawer() {
-	navbar.className = 'drawer-closed';
-	document.onclick = null;
-	document.documentElement.style.cursor = null;
-	drawerOpen = false;
+  navbar.className = "drawer-closed";
+  document.onclick = null;
+  document.documentElement.style.cursor = null;
+  drawerOpen = false;
 }
 
 function toggleDrawer() {
-	(drawerOpen) ? closeDrawer(): openDrawer();
+  drawerOpen ? closeDrawer() : openDrawer();
 }
 
-getPageTop();
-
-window.onscroll = autoHideNavbar;
-
-if (media.matches) {
-	navbar.onclick = function(event) {
-		toggleDrawer();
-		event.cancelBubble = true;
-	}
+if (window.requestAnimationFrame) {
+  window.onscroll = () => {
+    requestAnimationFrame(autoHideNavbar);
+  };
+} else {
+  window.onscroll = autoHideNavbar;
 }
 
-document.getElementById('navbar-title').onclick = function(event) {
-	event.cancelBubble = true; //clicking on #navbar-title does not toggle drawer
-}
-
-window.onresize = function() {
-	getPageTop();
-	if (media.matches)
-		navbar.onclick = function(event) {
-			toggleDrawer();
-			event.cancelBubble = true;
-		}
-	else {
-		navbar.onclick = null;
-		closeDrawer();
-	}
-}
+document.getElementById("navbar-title").onclick = function(e) {
+  e.cancelBubble = true; // so that clicking on #navbar-title does not toggle drawer
+};
