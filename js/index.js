@@ -7,7 +7,7 @@ let navbarVisible = true;
 let drawerOpen = false;
 let pageTop;
 let prevScrollPos = window.pageYOffset;
-let media = window.matchMedia("(max-width: 600px), (max-height: 500px)");
+let media = window.matchMedia("(max-width: 600px)");
 
 function autoHideNavbar() {
   const currentScrollPos = window.pageYOffset;
